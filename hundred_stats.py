@@ -1,11 +1,12 @@
 import csv
 
-def import_csv_to_dict(file_path: str) -> list:
+def import_csv_to_dict(file_path: str, name: str) -> list:
     """Convert a csv to a list of dictionaries, the first dictionary is the
     headers
 
     Args:
         file (str): file path
+        name (str): name of csv to append to the start of each stat
 
     Returns:
         list(dict): list of dictionaries, each row is a dict
@@ -21,7 +22,11 @@ def import_csv_to_dict(file_path: str) -> list:
     for row in raw_data_list:
         row_data = dict()
         for index, header in enumerate(headers):
-            row_data[header] = row[index]
+            if 'Name' not in header:
+                header_name = name + '-' + header
+            else:
+                header_name = header
+            row_data[header_name] = row[index]
         row_data['match'] = False
         data_list.append(row_data)
 
@@ -69,36 +74,36 @@ def combine_lists(list1: list, list2: list, key: str) -> list:
                 list2_row['match'] = True
                 row_data = {**list1_row, **list2_row}
                 combined_list.append(row_data)
-    
+
     combined_list = add_none_match_to_list(combined_list, list1)
     combined_list = add_none_match_to_list(combined_list, list2)
 
     return combined_list
 
-def improve_data(data_list: list) -> list:
+def improve_data(data_list: list, non_integers: list) -> list:
     """Takes a list of dictionaries containting the data, make sure all
     dictionaries have the correct data, 0's all missing entries
 
     Args:
         data_list (list): list of dictionaries containing the data
+        non_integers (list): list of headers which should not be converted to
+        an integer
 
     Returns:
         list: improved list of data
     """
     headers = list(data_list[0].keys())
+
     for data in data_list:
-        print (data)
         for header in headers:
             if data[header] == '':
                 data[header] = '0'
 
+    for data in data_list:
+        for header in headers:
+            if header not in non_integers:
+                data[header] = str(data[header])
+                data[header] = data[header].replace('*', '')
+                data[header] = float(data[header])
+
     return data_list
-
-
-
-batting_data = import_csv_to_dict('batting.csv')
-bowling_data = import_csv_to_dict('bowling.csv')
-combined_data = combine_lists(batting_data, bowling_data, 'Name')
-combined_data = improve_data(combined_data)
-
-print ((combined_data))
