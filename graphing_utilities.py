@@ -19,7 +19,7 @@ def CheckConstraints (player, constraints):
         # if the eval doesn't work then print out the error
         except:
             print ('********** {:} missing {:} **********'.format (player ['name'], c ['key']))  
-        return False
+            return False
     
     # if none of the constraints have returned false 
     # then the player should be added so return true
@@ -48,14 +48,14 @@ def PlotHBarGraphAndPrintTable (players_list, y_axis, x_axis, reverse, number_it
     for s in sorted_list:
         # check the data exists on the x_axis and then check the constraints
         # allow the player to be added
-        if s [x_axis] != 0 and CheckConstraints (s, constraints):
+        if s[x_axis] != 0 and CheckConstraints (s, constraints):
         # if so then add the player and the chosen stat to the x and y list
         # then print the html row
             y.append (s [y_axis])
             x.append (s [x_axis])
-        PrintHtmlTableLine (s, table_columns)
-        # count is incremented if a player is added, 
-        count += 1
+            PrintHtmlTableLine (s, table_columns)
+            # count is incremented if a player is added
+            count += 1
         # if the count is equal to the number of items request then 
         # stop and break out of the loop
         if count == number_items:

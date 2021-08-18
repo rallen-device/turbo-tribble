@@ -18,5 +18,6 @@ colour_scheme = graphing_utilities.CreateColourGradientList (number_of_players, 
 
 # create graph 1 - actual goals per wage, with no constraints
 title = 'Expected goals and assists per weekly wage'
-constraints = [graphing_utilities.CreateConstraintsDict ('batting-Runs', '>', '40')]
-graphing_utilities.PlotHBarGraphAndPrintTable (combined_data, y, key, True, 20, title, xlabel, constraints, table_columns, colour_scheme)
+constraints = [graphing_utilities.CreateConstraintsDict ('batting-Runs', '>', '70.0')]
+# constraints = []
+graphing_utilities.PlotHBarGraphAndPrintTable(combined_data, y, key, True, number_of_players, title, xlabel, constraints, table_columns, colour_scheme)
